@@ -14,7 +14,7 @@ $(TARGET): $(OBJ) | bin
 	gcc -o $@ $^
 
 obj/%.o: src/%.c | obj 
-	gcc -c $< -o $@ -Iinclude
+	gcc -c $< -o $@ -Iinc
 
 obj:
 	mkdir -p obj 
