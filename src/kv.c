@@ -1,13 +1,14 @@
 #include <kv.h>
 #include <string.h>
 #include <stdlib.h>
+#include <limits.h>
 
 
 #define TOMBSTONE ((char*)0x1)
 
 kv_t *kv_init(size_t capacity)
 {
-	if (capacity == 0)
+	if (capacity == 0 || capacity > INT_MAX)
 	{
 		return NULL;
 	}
@@ -55,11 +56,12 @@ int kv_put(kv_t *db, char *key, char *value)
 		{
 			char *newval = strdup(value);
 			if (!newval) return -1;
+			free(entry->value);
 			entry->value = newval;
-			return real_idx;
+			return 0;
 		}
 
-		// Key not found. Update.
+		// Key not found. Insert.
 		if (!entry->key || entry->key == TOMBSTONE)
 		{
 			char *newval = strdup(value);
@@ -73,7 +75,7 @@ int kv_put(kv_t *db, char *key, char *value)
 			entry->key = newkey;
 			entry->value = newval;
 			db->count++;
-			return real_idx;
+			return 0;
 		}
 			
 	}
