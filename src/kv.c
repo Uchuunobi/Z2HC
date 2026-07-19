@@ -162,7 +162,7 @@ int kv_delete(kv_t *db, char *key)
 			entry->key = TOMBSTONE;
 			entry->value = NULL;
 
-			return real_idx;
+			return 0;
 		}
 
 
