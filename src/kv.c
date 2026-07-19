@@ -58,7 +58,7 @@ int kv_put(kv_t *db, char *key, char *value)
 			if (!newval) return -1;
 			free(entry->value);
 			entry->value = newval;
-			return real_idx;
+			return 0;
 		}
 
 		// Key not found. Insert.
@@ -75,7 +75,7 @@ int kv_put(kv_t *db, char *key, char *value)
 			entry->key = newkey;
 			entry->value = newval;
 			db->count++;
-			return real_idx;
+			return 0;
 		}
 			
 	}
