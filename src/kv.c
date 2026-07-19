@@ -83,6 +83,47 @@ int kv_put(kv_t *db, char *key, char *value)
 		return -2;
 }
 
+char *kv_get(kv_t *db, char *key)
+{
+	if ( !db || !key ) return NULL;
+
+	// Starting point
+	size_t idx = hash(key, db->capacity);
+
+	for(int i = 0; i < db->capacity - 1; i++)
+	{
+		size_t real_idx = (idx + i) % db->capacity;
+
+		kv_entry_t *entry = &db->entries[real_idx];
+
+		// Found key
+		if 
+		(
+			entry->key && 
+			entry->key != TOMBSTONE && 
+			!strcmp(entry->key, key)
+		)
+		{
+			return entry->value;
+		}
+
+
+		// Found nothing
+		if 
+		(
+		 entry->key == NULL &&
+		 entry->key != TOMBSTONE
+		)
+		{
+			return NULL;
+		}
+			
+	}
+
+	// Full scan. Not found.
+	return NULL;
+}
+
 size_t hash(char *val, size_t capacity)
 {
 	size_t hash = 0x13371337deadbeef;
@@ -97,4 +138,3 @@ size_t hash(char *val, size_t capacity)
 
 	return hash % capacity;
 }
-
