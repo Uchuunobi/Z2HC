@@ -161,6 +161,7 @@ int kv_delete(kv_t *db, char *key)
 
 			entry->key = TOMBSTONE;
 			entry->value = NULL;
+			db->count--;
 
 			return 0;
 		}
