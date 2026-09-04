@@ -182,7 +182,7 @@ int kv_free(kv_t *db)
 	{
 		kv_entry_t *e = &db->entries[i];
 
-		if(e->key && e->value != (void*)TOMBSTONE)
+		if(e->key && (e->key != (void*)TOMBSTONE))
 		{
 			free(e->key);
 			free(e->value);

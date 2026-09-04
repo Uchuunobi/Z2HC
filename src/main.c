@@ -12,6 +12,7 @@ int main()
 	kv_delete(db, "city");
 
 	kv_free(db);
+	db = NULL;
 	// valgrind should report 0 bytes in use at exit
 
 	return 0;
