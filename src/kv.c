@@ -34,8 +34,8 @@ kv_t *kv_init(size_t capacity)
 	return table;
 }
 
-static size_t hash(char*, size_t);
-int kv_put(kv_t *db, char *key, char *value)
+static size_t hash(const char*, size_t);
+int kv_put(kv_t *db, const char *key, const char *value)
 {
 	if (!db || !key || !value) return -1;
 
@@ -84,7 +84,7 @@ int kv_put(kv_t *db, char *key, char *value)
 		return -2;
 }
 
-char *kv_get(kv_t *db, char *key)
+char *kv_get(kv_t *db, const char *key)
 {
 	if ( !db || !key ) return NULL;
 
@@ -126,7 +126,7 @@ char *kv_get(kv_t *db, char *key)
 	return NULL;
 }
 
-int kv_delete(kv_t *db, char *key)
+int kv_delete(kv_t *db, const char *key)
 {
 	if ( !db || !key ) return -1;
 
@@ -175,9 +175,9 @@ int kv_delete(kv_t *db, char *key)
 	return -1;
 }
 
-int kv_free(kv_t *db)
+void kv_free(kv_t *db)
 {
-	if(!db) return -1;
+	if(!db) return;
 
 	for(size_t i = 0; i < db->capacity-1; i++)
 	{
@@ -195,12 +195,9 @@ int kv_free(kv_t *db)
 	
 	free(db->entries);
 	free(db);
-
-	return 0;
-
 }
 
-size_t hash(char *val, size_t capacity)
+size_t hash(const char *val, size_t capacity)
 {
 	size_t hash = 0x13371337deadbeef;
 	while(*val)
