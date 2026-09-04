@@ -174,6 +174,31 @@ int kv_delete(kv_t *db, char *key)
 	return -1;
 }
 
+int kv_free(kv_t *db)
+{
+	if(!db) return -1;
+
+	for(int i = 0; i < db->capacity-1; i++)
+	{
+		kv_entry_t *e = &db->entries[i];
+
+		if(e->key && e->value != (void*)TOMBSTONE)
+		{
+			free(e->key);
+			free(e->value);
+			e->key = NULL;
+			e->value = NULL;
+			db->count--;
+		}
+	}
+	
+	free(db->entries);
+	free(db);
+
+	return 0;
+
+}
+
 size_t hash(char *val, size_t capacity)
 {
 	size_t hash = 0x13371337deadbeef;
