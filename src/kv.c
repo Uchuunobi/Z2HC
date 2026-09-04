@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200809L
 #include <kv.h>
 #include <string.h>
 #include <stdlib.h>
@@ -40,7 +41,7 @@ int kv_put(kv_t *db, char *key, char *value)
 
 	size_t idx = hash(key, db->capacity);
 
-	for(int i = 0; i < db->capacity - 1; i++)
+	for(size_t i = 0; i < db->capacity - 1; i++)
 	{
 		size_t real_idx = (idx + i) % db->capacity;
 
@@ -90,7 +91,7 @@ char *kv_get(kv_t *db, char *key)
 	// Starting point
 	size_t idx = hash(key, db->capacity);
 
-	for(int i = 0; i < db->capacity - 1; i++)
+	for(size_t i = 0; i < db->capacity - 1; i++)
 	{
 		size_t real_idx = (idx + i) % db->capacity;
 
@@ -132,7 +133,7 @@ int kv_delete(kv_t *db, char *key)
 	// Starting point
 	size_t idx = hash(key, db->capacity);
 
-	for(int i = 0; i < db->capacity - 1; i++)
+	for(size_t i = 0; i < db->capacity - 1; i++)
 	{
 		size_t real_idx = (idx + i) % db->capacity;
 
@@ -178,7 +179,7 @@ int kv_free(kv_t *db)
 {
 	if(!db) return -1;
 
-	for(int i = 0; i < db->capacity-1; i++)
+	for(size_t i = 0; i < db->capacity-1; i++)
 	{
 		kv_entry_t *e = &db->entries[i];
 
